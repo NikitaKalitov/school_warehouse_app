@@ -13,7 +13,7 @@ void main() {
           ),
         ],
         child: const MyApp(),
-      )
+      ),
   );
 }
 
