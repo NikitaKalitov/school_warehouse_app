@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_warehouse_app/ui/widgets/item_widget.dart';
 
 import '../../logic/main_cubit.dart';
-import '../widgets/hotel_widget.dart';
 import '../widgets/sort_widget.dart';
 
-class AllHotelsPage extends StatefulWidget {
-  const AllHotelsPage({super.key});
+class ItemsPage extends StatefulWidget {
+  const ItemsPage({super.key});
 
   @override
-  State<AllHotelsPage> createState() => _AllHotelsPageState();
+  State<ItemsPage> createState() => _ItemsPageState();
 }
 
-class _AllHotelsPageState extends State<AllHotelsPage> {
+class _ItemsPageState extends State<ItemsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainCubit, MainCubitState>(
@@ -24,8 +24,8 @@ class _AllHotelsPageState extends State<AllHotelsPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 80),
-                  ...state.allHotels!.map((e) {
-                    return HotelWidget(hotel: e);
+                  ...state.allItems!.map((e) {
+                    return ItemWidget(item: e);
                   }).toList(),
                 ],
               ),
@@ -40,6 +40,6 @@ class _AllHotelsPageState extends State<AllHotelsPage> {
           ],
         );
       },
-    );
+    );;
   }
 }

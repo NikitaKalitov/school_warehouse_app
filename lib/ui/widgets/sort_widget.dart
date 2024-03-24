@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_2_dasha_eve/logic/main_cubit.dart';
 
 List<DropdownMenuItem> listOfItems = [
   const DropdownMenuItem(value: 'views desc', child: Text('Most viewed')),

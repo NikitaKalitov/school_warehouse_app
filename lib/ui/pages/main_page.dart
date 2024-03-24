@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_2_dasha_eve/data/storage/storage_provider.dart';
 
 import '../../logic/main_cubit.dart';
-import 'all_hotels_page.dart';
-import 'all_places_page.dart';
-import 'favourite_page.dart';
+import 'items_page.dart';
 
 const List<Icon> _icons = [
   Icon(Icons.hotel),
@@ -20,9 +17,7 @@ const List<String> _labels = [
 ];
 
 List<Widget> _pages = const [
-  AllHotelsPage(),
-  AllPlacesPage(),
-  FavouritePage(),
+  ItemsPage(),
 ];
 
 List<BottomNavigationBarItem> _bottomNavBarItems() {
