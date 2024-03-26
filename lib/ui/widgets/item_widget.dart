@@ -72,7 +72,7 @@ class _ItemImageWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(_radius),
         child: Image.network(
           image,
-          fit: BoxFit.cover,
+          fit: BoxFit.fitHeight,
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) return child;
             return Center(

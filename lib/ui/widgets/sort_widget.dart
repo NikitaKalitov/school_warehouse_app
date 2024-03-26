@@ -9,15 +9,9 @@ List<DropdownMenuItem> listOfItems = [
 
 class SortWidget extends StatefulWidget {
   const SortWidget({
-    super.key,
-    required this.valueKey,
-    required this.function,
-    required this.currentItem,
+    super.key
   });
 
-  final ValueKey<String> valueKey;
-  final void Function(String) function;
-  final String currentItem;
 
   @override
   State<SortWidget> createState() => _SortWidgetState();
@@ -41,9 +35,9 @@ class _SortWidgetState extends State<SortWidget> {
             alignedDropdown: true,
             child: DropdownButton(
               items: listOfItems,
-              value: widget.currentItem,
+              // value: widget.currentItem,
               onChanged: (value) {
-                widget.function(value);
+                // widget.function(value);
               },
             ),
           ),

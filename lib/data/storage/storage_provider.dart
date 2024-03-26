@@ -37,7 +37,7 @@ class SPrefProvider {
 
 class _Converter {
   static List<Item> getAllItemsFromJson(String json) {
-    var listOfAllItemsJson = jsonDecode(json);
+    var listOfAllItemsJson = jsonDecode(json)['items'];
     List<Item> listOfAllItems = [];
     for (int i = 0; i < listOfAllItemsJson.length; i++) {
       listOfAllItems.add(Item.fromMap(listOfAllItemsJson[i]));

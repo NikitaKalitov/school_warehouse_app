@@ -3,21 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../logic/main_cubit.dart';
 import 'items_page.dart';
+import 'sort_page.dart';
 
 const List<Icon> _icons = [
-  Icon(Icons.hotel),
-  Icon(Icons.place),
-  Icon(Icons.favorite),
+  Icon(Icons.format_list_bulleted_rounded),
+  Icon(Icons.search),
 ];
 
 const List<String> _labels = [
-  'Hotels',
-  'Places',
-  'Favourite',
+  'Items',
+  'Search',
 ];
 
 List<Widget> _pages = const [
   ItemsPage(),
+  SortPage(),
 ];
 
 List<BottomNavigationBarItem> _bottomNavBarItems() {
