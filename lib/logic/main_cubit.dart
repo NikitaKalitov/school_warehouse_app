@@ -61,6 +61,7 @@ class MainCubit extends Cubit<MainCubitState> {
 
   // сбрасываем результаты поиска
   void resetSearch() {
+    // filteredItems нам нужен при ручном сбросе полей поиска
     emit(state.copyWith(searchItems: state.filteredItems));
   }
 
@@ -84,6 +85,9 @@ class MainCubit extends Cubit<MainCubitState> {
         shelfFilterItems: [],
         // паттерн для полок сбрасываем
         shelfFilterPattern: -1,
+        // при изменении фильтра сбрасываем поля поиска
+        idSearch: '',
+        titleSearch: '',
       ));
       return;
     }
@@ -111,6 +115,9 @@ class MainCubit extends Cubit<MainCubitState> {
       shelfFilterItems: [],
       // сбрасываем фильтр по полкам
       shelfFilterPattern: -1,
+      // при изменении фильтра сбрасываем поля поиска
+      idSearch: '',
+      titleSearch: '',
     ));
   }
 
@@ -129,6 +136,9 @@ class MainCubit extends Cubit<MainCubitState> {
         shelfFilterItems: [],
         // сбрасываем фильтр по полкам
         shelfFilterPattern: -1,
+        // при изменении фильтра сбрасываем поля поиска
+        idSearch: '',
+        titleSearch: '',
       ));
       return;
     }
@@ -151,6 +161,9 @@ class MainCubit extends Cubit<MainCubitState> {
       shelfFilterItems: distinctShelfFilterIds,
       // сбрасываем фильтр по полкам
       shelfFilterPattern: -1,
+      // при изменении фильтра сбрасываем поля поиска
+      idSearch: '',
+      titleSearch: '',
     ));
   }
 
@@ -165,6 +178,9 @@ class MainCubit extends Cubit<MainCubitState> {
         filteredItems: _filterByRackId(_filterByStorehouseId(state.allItems!)),
         // записываем -1 в фильтр полки
         shelfFilterPattern: newShelfFilter,
+        // при изменении фильтра сбрасываем поля поиска
+        idSearch: '',
+        titleSearch: '',
       ));
       return;
     }
@@ -180,6 +196,9 @@ class MainCubit extends Cubit<MainCubitState> {
       // отфильтрованные предметы отфильтрованы по id стеллажа
       // (пока не понял, зачем это сделал)
       filteredItems: itemsFilteredByShelfId,
+      // при изменении фильтра сбрасываем поля поиска
+      idSearch: '',
+      titleSearch: '',
     ));
   }
 
