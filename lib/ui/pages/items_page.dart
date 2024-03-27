@@ -19,22 +19,25 @@ class _ItemsPageState extends State<ItemsPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<MainCubit, MainCubitState>(
       builder: (context, state) {
-        return Stack(
-          alignment: AlignmentDirectional.topStart,
-          children: [
-            SingleChildScrollView(
-              key: const PageStorageKey<String>('allHotels'),
-              child: Column(
-                children: [
-                  const SizedBox(height: 180),
-                  ...state.searchItems!.map((e) {
-                    return ItemWidget(item: e);
-                  }),
-                ],
+        return Align(
+          alignment: Alignment.topCenter,
+          child: Stack(
+            alignment: AlignmentDirectional.topCenter,
+            children: [
+              SingleChildScrollView(
+                key: const PageStorageKey<String>('allHotels'),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 180),
+                    ...state.searchItems!.map((e) {
+                      return ItemWidget(item: e);
+                    }),
+                  ],
+                ),
               ),
-            ),
-            const SearchSection(),
-          ],
+              const SearchSection(),
+            ],
+          ),
         );
       },
     );
