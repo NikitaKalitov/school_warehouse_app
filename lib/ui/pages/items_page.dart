@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/main_cubit.dart';
 import '../widgets/item_widget.dart';
 import '../widgets/search_widget.dart';
-import '../widgets/sort_widget.dart';
+import '../widgets/filter_widget.dart';
 import '../widgets/submit_button.dart';
 
 class ItemsPage extends StatefulWidget {
@@ -20,13 +20,14 @@ class _ItemsPageState extends State<ItemsPage> {
     return BlocBuilder<MainCubit, MainCubitState>(
       builder: (context, state) {
         return Stack(
+          alignment: AlignmentDirectional.topStart,
           children: [
             SingleChildScrollView(
               key: const PageStorageKey<String>('allHotels'),
               child: Column(
                 children: [
                   const SizedBox(height: 180),
-                  ...state.currentItems!.map((e) {
+                  ...state.searchItems!.map((e) {
                     return ItemWidget(item: e);
                   }),
                 ],

@@ -34,7 +34,7 @@ class _SubmitButtonState extends State<SubmitButton> {
         ),
         const SizedBox(width: 15,),
         ElevatedButton(
-          onPressed: context.read<MainCubit>().reset,
+          onPressed: context.read<MainCubit>().resetSearch,
           child: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
