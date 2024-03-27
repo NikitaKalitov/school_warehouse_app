@@ -12,18 +12,27 @@ class FilterWidget extends StatefulWidget {
     super.key,
     required this.onChanged,
     required this.items,
-    required this.value,
+    required this.value, required this.type,
   });
 
   final Function onChanged;
   final List<int> items;
   final int value;
+  final List<String> type;
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
+
+  String getText(int value, List<String> type) {
+    if(value == -1){
+      return 'Все ${type[1]}';
+    }
+      else {return '${type[0]} $value';}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +49,7 @@ class _FilterWidgetState extends State<FilterWidget> {
             child: DropdownButton(
               items: [-1, ...widget.items].map((item) {
                 return DropdownMenuItem(
-                    value: item, child: Text(item.toString()));
+                    value: item, child: Text(getText(item, widget.type)));
               }).toList(),
               value: widget.value,
               onChanged: (value) {

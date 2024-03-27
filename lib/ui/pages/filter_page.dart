@@ -18,22 +18,30 @@ class _FilterPageState extends State<FilterPage> {
       builder: (context, state) {
         return Column(
           children: [
+            // фильтр по складам
             FilterWidget(
               key: const Key('filterByStorehouseId'),
               items: state.storehouseFilterItems!,
               value: state.storehouseFilterPattern!,
+              type: const ['Склад', 'склады'],
               onChanged: context.read<MainCubit>().changeStorehouseFilter,
             ),
+            // фильтр по стеллажам
+            // если список пустой, то не отображаем
             if(state.rackFilterItems!.isNotEmpty) FilterWidget(
               key: const Key('filterByRackId'),
               items: state.rackFilterItems!,
               value: state.rackFilterPattern!,
+              type: const ['Стеллаж', 'стеллажи'],
               onChanged: context.read<MainCubit>().changeRackFilter,
             ),
+            // фильтр по полкам
+            // если список пустой, то не отображаем
             if(state.shelfFilterItems!.isNotEmpty) FilterWidget(
               key: const Key('filterByShelfId'),
               items: state.shelfFilterItems!,
               value: state.shelfFilterPattern!,
+              type: const ['Полка', 'полки'],
               onChanged: context.read<MainCubit>().changeShelfFilter,
             ),
           ],

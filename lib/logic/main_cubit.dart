@@ -56,24 +56,33 @@ class MainCubit extends Cubit<MainCubitState> {
 
   // производим поиск по паттернам
   void submitSearch() {
-    emit(state.copyWith(searchItems: _sortItemsBySearch()));
+    emit(state.copyWith(searchItems: _filterItemsBySearch()));
   }
 
   // сбрасываем результаты поиска
   void resetSearch() {
-    emit(state.copyWith(searchItems: state.allItems));
+    emit(state.copyWith(searchItems: state.filteredItems));
   }
 
   // метод, срабатывающий при изменении id склада в выпадающем списке
   void changeStorehouseFilter(int newStorehouseFilter) {
+    // если выбраны все склады
     if (newStorehouseFilter == -1) {
       emit(state.copyWith(
+        // тогда отображаемые предметы и отсортированные предметы = все предметы из памяти
         searchItems: state.allItems,
         filteredItems: state.allItems,
+        // записываем в паттерн склада -1
         storehouseFilterPattern: newStorehouseFilter,
+        // список стеллажей пустой
+        // чтобы выпадающий список стеллажей не отображался
         rackFilterItems: [],
+        // паттерн для стеллажей сбрасываем
         rackFilterPattern: -1,
+        // список полок пустой
+        // чтобы выпадающий список полок не отображался
         shelfFilterItems: [],
+        // паттерн для полок сбрасываем
         shelfFilterPattern: -1,
       ));
       return;
@@ -98,6 +107,7 @@ class MainCubit extends Cubit<MainCubitState> {
       // сбрасываем фильтр по стеллажам
       rackFilterPattern: -1,
       // сбрасываем список уникальных id полок
+      // чтобы выпадающий список полок не отображался
       shelfFilterItems: [],
       // сбрасываем фильтр по полкам
       shelfFilterPattern: -1,
@@ -106,13 +116,18 @@ class MainCubit extends Cubit<MainCubitState> {
 
   // метод, срабатывающий при изменении id стеллажа в выпадающем списке
   void changeRackFilter(int newRackFilter) {
-    // если выбраны все
+    // если выбраны все стеллажи
     if (newRackFilter == -1) {
       emit(state.copyWith(
+        // отображаемые и отфильтрованные предметы = отфильтрованные по id склада
         searchItems: _filterByStorehouseId(state.allItems!),
         filteredItems: _filterByStorehouseId(state.allItems!),
+        // записываем -1 в фильтр стеллажа
         rackFilterPattern: newRackFilter,
+        // сбрасываем список уникальных id полок
+        // чтобы выпадающий список полок не отображался
         shelfFilterItems: [],
+        // сбрасываем фильтр по полкам
         shelfFilterPattern: -1,
       ));
       return;
@@ -139,52 +154,79 @@ class MainCubit extends Cubit<MainCubitState> {
     ));
   }
 
-  void changeShelfFilter(int newShelfFilter) {}
-
-  void submitFilter() {
-    // _filterAllItemsByAllFilters();
+  // метод, срабатывающий при изменении id полки в выпадающем списке
+  void changeShelfFilter(int newShelfFilter) {
+    // если выбраны все полки
+    if (newShelfFilter == -1) {
+      emit(state.copyWith(
+        // отображаемые и отфильтрованные предметы =
+        // = отфильтрованные по id склада и по id стеллажа
+        searchItems: _filterByRackId(_filterByStorehouseId(state.allItems!)),
+        filteredItems: _filterByRackId(_filterByStorehouseId(state.allItems!)),
+        // записываем -1 в фильтр полки
+        shelfFilterPattern: newShelfFilter,
+      ));
+      return;
+    }
+    // обновляем паттерн фильтрации по id полки
+    emit(state.copyWith(shelfFilterPattern: newShelfFilter));
+    // фильтруем отфильтрованные по id склада и по id стеллажа предметы еще и по id полки
+    List<Item> itemsFilteredByShelfId = _filterByShelfId(
+        _filterByRackId(_filterByStorehouseId(state.allItems!)));
+    // записываем в стейт новые данные
+    emit(state.copyWith(
+      // отображаемые предметы отфильтрованы по id стеллажа
+      searchItems: itemsFilteredByShelfId,
+      // отфильтрованные предметы отфильтрованы по id стеллажа
+      // (пока не понял, зачем это сделал)
+      filteredItems: itemsFilteredByShelfId,
+    ));
   }
 
-  List<Item> _sortItemsBySearch() {
+  // фильтр предметов по полям поиска
+  List<Item> _filterItemsBySearch() {
     List<Item> sortedListFirstCheck = [];
-    for (int i = 0; i < state.searchItems!.length; i++) {
-      Item item = state.searchItems![i];
-      if (state.titleSearch!.isNotEmpty) {
+    // сначала фильтруем по названию, если оно не пустое
+    if (state.titleSearch!.isNotEmpty) {
+      // пробегаемся по списку предметов
+      for (int i = 0; i < state.searchItems!.length; i++) {
+        Item item = state.searchItems![i];
+        // если введенное значение есть в названии
         if (item.title
             .toLowerCase()
             .contains(state.titleSearch!.toLowerCase())) {
+          // то добавляем в список отсортированных по названию
           sortedListFirstCheck.add(item);
         }
-      } else {
-        sortedListFirstCheck.add(item);
       }
     }
+    // если название пустое, то оставляем все предметы без фильтрации
+    else {
+      sortedListFirstCheck = state.searchItems!.toList();
+    }
     List<Item> sortedListSecondCheck = [];
-    for (int i = 0; i < sortedListFirstCheck.length; i++) {
-      Item item = sortedListFirstCheck[i];
-      if (state.idSearch!.isNotEmpty) {
+    // если поле поиска по id не пустое
+    if (state.idSearch!.isNotEmpty) {
+      // пробегаем по списку отсортированных по названию предметов
+      for (int i = 0; i < sortedListFirstCheck.length; i++) {
+        Item item = sortedListFirstCheck[i];
+        // если введенное id совпадает с id предмета
         if (item.id == int.parse(state.titleSearch!)) {
+          // добавляем его в список второй фильтрации
           sortedListSecondCheck.add(item);
         }
-      } else {
-        sortedListSecondCheck.add(item);
       }
+    }
+    // если поле id пустое, то оставляем фильтр только по названию
+    else {
+      sortedListSecondCheck = sortedListFirstCheck.toList();
     }
     return sortedListSecondCheck;
   }
 
-  void _filterAllItemsByAllFilters() {
-    List<Item> itemsFilteredByStorehouseId =
-        _filterByStorehouseId(state.allItems!);
-    List<Item> itemsFilteredByStorehouseIdAndRackId =
-        _filterByRackId(itemsFilteredByStorehouseId);
-    List<Item> itemsFilteredByStorehouseIdAndRackIdAndShelfId =
-        _filterByShelfId(itemsFilteredByStorehouseIdAndRackId);
-    emit(state.copyWith(
-        filteredItems: itemsFilteredByStorehouseIdAndRackIdAndShelfId));
-  }
-
+  // фильтруем по id склада
   List<Item> _filterByStorehouseId(List<Item> input) {
+    // не фильтруем, если выбраны все склады
     if (state.storehouseFilterPattern == -1) {
       return input;
     }
@@ -198,7 +240,9 @@ class MainCubit extends Cubit<MainCubitState> {
     return itemsFilteredByStorehouseId;
   }
 
+  // фильтруем по id стеллажа
   List<Item> _filterByRackId(List<Item> input) {
+    // не фильтруем, если выбраны все стеллажи
     if (state.rackFilterPattern == -1) {
       return input;
     }
@@ -212,7 +256,9 @@ class MainCubit extends Cubit<MainCubitState> {
     return itemsFilteredByRackId;
   }
 
+  // фильтруем по id полки
   List<Item> _filterByShelfId(List<Item> input) {
+    // не фильтруем, если выбраны все полки
     if (state.shelfFilterPattern == -1) {
       return input;
     }
@@ -226,6 +272,7 @@ class MainCubit extends Cubit<MainCubitState> {
     return itemsFilteredByShelfId;
   }
 
+  // получить уникальные id складов в списке входящих предметов
   List<int> _getDistinctStorehouseIds(List<Item> input) {
     List<int> listOfAllStorehouseIds = [];
     for (int i = 0; i < input.length; i++) {
@@ -234,6 +281,7 @@ class MainCubit extends Cubit<MainCubitState> {
     return listOfAllStorehouseIds.toSet().toList();
   }
 
+  // получить уникальные id стеллажей в списке входящих предметов
   List<int> _getDistinctRackIds(List<Item> input) {
     List<int> listOfAllRackIds = [];
     for (int i = 0; i < input.length; i++) {
@@ -242,6 +290,7 @@ class MainCubit extends Cubit<MainCubitState> {
     return listOfAllRackIds.toSet().toList();
   }
 
+  // получить уникальные id полок в списке входящих предметов
   List<int> _getDistinctShelfIds(List<Item> input) {
     List<int> listOfAllShelfIds = [];
     for (int i = 0; i < input.length; i++) {
