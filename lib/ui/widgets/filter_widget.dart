@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 
-// List<DropdownMenuItem> listOfItems = [
-//   const DropdownMenuItem(value: -1, child: Text('Все')),
-//   const DropdownMenuItem(value: 0, child: Text('Least viewed')),
-//   const DropdownMenuItem(value: 'rating desc', child: Text('Highest rating')),
-//   const DropdownMenuItem(value: 'rating asc', child: Text('Lowest rating')),
-// ];
-
 class FilterWidget extends StatefulWidget {
   const FilterWidget({
     super.key,
