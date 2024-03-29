@@ -7,12 +7,12 @@ import 'filter_page.dart';
 
 const List<Icon> _icons = [
   Icon(Icons.format_list_bulleted_rounded),
-  Icon(Icons.search),
+  Icon(Icons.filter_alt),
 ];
 
 const List<String> _labels = [
-  'Items',
-  'Search',
+  'Предметы',
+  'Фильтр',
 ];
 
 List<Widget> _pages = const [

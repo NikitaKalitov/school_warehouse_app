@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/main_cubit.dart';
 import '../widgets/item_widget.dart';
 import '../widgets/search_widget.dart';
-import '../widgets/filter_widget.dart';
 import '../widgets/submit_button.dart';
 
 class ItemsPage extends StatefulWidget {
@@ -25,7 +24,7 @@ class _ItemsPageState extends State<ItemsPage> {
             alignment: AlignmentDirectional.topCenter,
             children: [
               SingleChildScrollView(
-                key: const PageStorageKey<String>('allHotels'),
+                key: const PageStorageKey<String>('allItems'),
                 child: Column(
                   children: [
                     const SizedBox(height: 180),

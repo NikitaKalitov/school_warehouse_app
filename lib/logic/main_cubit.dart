@@ -297,7 +297,9 @@ class MainCubit extends Cubit<MainCubitState> {
     for (int i = 0; i < input.length; i++) {
       listOfAllStorehouseIds.add(input[i].storehouseId);
     }
-    return listOfAllStorehouseIds.toSet().toList();
+    listOfAllStorehouseIds = listOfAllStorehouseIds.toSet().toList();
+    listOfAllStorehouseIds.sort((a, b) => a.compareTo(b));
+    return listOfAllStorehouseIds;
   }
 
   // получить уникальные id стеллажей в списке входящих предметов
@@ -306,7 +308,9 @@ class MainCubit extends Cubit<MainCubitState> {
     for (int i = 0; i < input.length; i++) {
       listOfAllRackIds.add(input[i].rackId);
     }
-    return listOfAllRackIds.toSet().toList();
+    listOfAllRackIds = listOfAllRackIds.toSet().toList();
+    listOfAllRackIds.sort((a, b) => a.compareTo(b));
+    return listOfAllRackIds;
   }
 
   // получить уникальные id полок в списке входящих предметов
@@ -315,7 +319,9 @@ class MainCubit extends Cubit<MainCubitState> {
     for (int i = 0; i < input.length; i++) {
       listOfAllShelfIds.add(input[i].shelfId);
     }
-    return listOfAllShelfIds.toSet().toList();
+    listOfAllShelfIds = listOfAllShelfIds.toSet().toList();
+    listOfAllShelfIds.sort((a, b) => a.compareTo(b));
+    return listOfAllShelfIds;
   }
 }
 
