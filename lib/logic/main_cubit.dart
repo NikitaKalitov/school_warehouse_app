@@ -37,6 +37,7 @@ class MainCubit extends Cubit<MainCubitState> {
       // при инициализации отфильтрованные предметы - тоже все предметы
       // потому что фильтра при инициализации нет
       searchItems: allItems,
+      filteredItems: allItems,
       // ну и получаем уникальные id всех складов (не дублируются)
       storehouseFilterItems: _getDistinctStorehouseIds(allItems),
     ));
@@ -204,6 +205,9 @@ class MainCubit extends Cubit<MainCubitState> {
 
   // фильтр предметов по полям поиска
   List<Item> _filterItemsBySearch() {
+    if(state.titleSearch!.isEmpty && state.idSearch!.isEmpty) {
+      emit(state.copyWith(searchItems: state.filteredItems));
+    }
     List<Item> sortedListFirstCheck = [];
     // сначала фильтруем по названию, если оно не пустое
     if (state.titleSearch!.isNotEmpty) {
@@ -230,7 +234,7 @@ class MainCubit extends Cubit<MainCubitState> {
       for (int i = 0; i < sortedListFirstCheck.length; i++) {
         Item item = sortedListFirstCheck[i];
         // если введенное id совпадает с id предмета
-        if (item.id == int.parse(state.titleSearch!)) {
+        if (item.id == int.parse(state.idSearch!)) {
           // добавляем его в список второй фильтрации
           sortedListSecondCheck.add(item);
         }
