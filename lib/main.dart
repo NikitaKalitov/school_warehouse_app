@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import './logic/main_cubit.dart';
 import './ui/pages/main_page.dart';
+import 'ui/pages/login_page.dart';
 
 void main() {
   runApp(
@@ -39,7 +40,8 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: false,
       ),
-      home: const MainPage(),
+      // home: const MainPage(),
+      home: const LoginPage(),
     );
   }
 }
